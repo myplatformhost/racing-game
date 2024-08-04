@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Racing Game</title>
+    <title>Vortexion Racer</title>
     <style>
         body {
             display: flex;
@@ -82,7 +82,7 @@
     </style>
 </head>
 <body>
-    <h1>Racing Game</h1>
+    <h1>Vortexion Racer</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
         <div id="game-over">
@@ -110,20 +110,19 @@
         let playerCarSpeed = 10; // Initial player car speed
         const enemyCars = [];
         const numberOfEnemies = 3; // Number of enemy cars
+        const spawnInterval = 1500; // Time in ms between enemy spawns
 
         document.addEventListener('keydown', movePlayerCar);
         gameArea.addEventListener('touchstart', handleTouchStart);
         gameArea.addEventListener('touchmove', handleTouchMove);
 
-        function createEnemyCars() {
-            for (let i = 0; i < numberOfEnemies; i++) {
-                const enemyCar = document.createElement('div');
-                enemyCar.classList.add('car', 'enemy-car');
-                enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
-                enemyCar.style.backgroundColor = getRandomColor();
-                gameArea.appendChild(enemyCar);
-                enemyCars.push(enemyCar);
-            }
+        function createEnemyCar() {
+            const enemyCar = document.createElement('div');
+            enemyCar.classList.add('car', 'enemy-car');
+            enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
+            enemyCar.style.backgroundColor = getRandomColor();
+            gameArea.appendChild(enemyCar);
+            enemyCars.push(enemyCar);
         }
 
         function movePlayerCar(event) {
@@ -158,13 +157,12 @@
                 const gameAreaRect = gameArea.getBoundingClientRect();
 
                 if (enemyCarRect.top > gameAreaRect.bottom) {
-                    enemyCar.style.top = '-100px';
-                    enemyCar.style.left = Math.floor(Math.random() * (gameAreaRect.width - enemyCarRect.width)) + 'px';
+                    gameArea.removeChild(enemyCar);
+                    enemyCars.splice(index, 1);
                     score++;
                     scoreBoard.textContent = score;
                     enemyCarSpeed += 0.1;
                     playerCarSpeed = 10 + score / 10; // Increase player car speed based on score
-                    enemyCar.style.backgroundColor = getRandomColor(); // Change enemy car color
                     scoreSound.play();
                 } else {
                     enemyCar.style.top = enemyCarRect.top - gameAreaRect.top + enemyCarSpeed + 'px';
@@ -188,8 +186,18 @@
         }
 
         function startGame() {
-            createEnemyCars();
-            gameInterval = setInterval(moveEnemyCars, 20);
+            gameInterval = setInterval(() => {
+                moveEnemyCars();
+                if (enemyCars.length < numberOfEnemies) {
+                    createEnemyCar();
+                }
+            }, 20);
+
+            setInterval(() => {
+                if (enemyCars.length < numberOfEnemies) {
+                    createEnemyCar();
+                }
+            }, spawnInterval);
         }
 
         function endGame() {
@@ -205,9 +213,9 @@
             playerCarSpeed = 10; // Reset player car speed
             playerCar.style.left = '125px';
             enemyCars.forEach((enemyCar) => {
-                enemyCar.style.top = '-100px';
-                enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - enemyCar.offsetWidth)) + 'px';
+                gameArea.removeChild(enemyCar);
             });
+            enemyCars.length = 0; // Clear enemy cars array
             gameOverScreen.style.display = 'none';
             startGame();
         }
