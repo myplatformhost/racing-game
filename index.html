@@ -29,28 +29,55 @@
             overflow: hidden;
             border: 2px solid #fff;
             touch-action: none; /* Prevent default touch actions */
+            background-image: linear-gradient(to bottom, #444 50%, #555 50%);
+            background-size: 100% 50px;
+            animation: road-animation 0.5s linear infinite;
+        }
+
+        @keyframes road-animation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 50px;
+            }
         }
 
         .car {
             width: 50px;
             height: 100px;
             position: absolute;
-            bottom: 10px;
             background-color: red;
         }
 
         #player-car {
+            bottom: 10px;
             left: 125px;
         }
 
-        #enemy-car {
+        .enemy-car {
             top: -100px;
-            background-color: blue;
         }
 
         #score-board {
             margin: 20px;
             font-size: 24px;
+        }
+
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #game-over h2 {
+            margin: 0 0 20px 0;
         }
     </style>
 </head>
@@ -58,32 +85,55 @@
     <h1>Racing Game</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
-        <div id="enemy-car" class="car"></div>
+        <div id="game-over">
+            <h2>Game Over</h2>
+            <p>Score: <span id="final-score">0</span></p>
+            <button onclick="restartGame()">Restart</button>
+        </div>
     </div>
     <div id="score-board">
         <p>Score: <span id="score">0</span></p>
     </div>
+    <audio id="collision-sound" src="collision.mp3"></audio>
+    <audio id="score-sound" src="score.mp3"></audio>
     <script>
         const gameArea = document.getElementById('game-area');
         const playerCar = document.getElementById('player-car');
-        const enemyCar = document.getElementById('enemy-car');
         const scoreBoard = document.getElementById('score');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScore = document.getElementById('final-score');
+        const collisionSound = document.getElementById('collision-sound');
+        const scoreSound = document.getElementById('score-sound');
         let score = 0;
         let gameInterval;
         let enemyCarSpeed = 5;
+        let playerCarSpeed = 10; // Initial player car speed
+        const enemyCars = [];
+        const numberOfEnemies = 3; // Number of enemy cars
 
         document.addEventListener('keydown', movePlayerCar);
         gameArea.addEventListener('touchstart', handleTouchStart);
         gameArea.addEventListener('touchmove', handleTouchMove);
+
+        function createEnemyCars() {
+            for (let i = 0; i < numberOfEnemies; i++) {
+                const enemyCar = document.createElement('div');
+                enemyCar.classList.add('car', 'enemy-car');
+                enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
+                enemyCar.style.backgroundColor = getRandomColor();
+                gameArea.appendChild(enemyCar);
+                enemyCars.push(enemyCar);
+            }
+        }
 
         function movePlayerCar(event) {
             const playerCarRect = playerCar.getBoundingClientRect();
             const gameAreaRect = gameArea.getBoundingClientRect();
 
             if (event.key === 'ArrowLeft' && playerCarRect.left > gameAreaRect.left) {
-                playerCar.style.left = playerCarRect.left - gameAreaRect.left - 10 + 'px';
+                playerCar.style.left = playerCarRect.left - gameAreaRect.left - playerCarSpeed + 'px';
             } else if (event.key === 'ArrowRight' && playerCarRect.right < gameAreaRect.right) {
-                playerCar.style.left = playerCarRect.left - gameAreaRect.left + 10 + 'px';
+                playerCar.style.left = playerCarRect.left - gameAreaRect.left + playerCarSpeed + 'px';
             }
         }
 
@@ -102,23 +152,29 @@
             }
         }
 
-        function moveEnemyCar() {
-            const enemyCarRect = enemyCar.getBoundingClientRect();
-            const gameAreaRect = gameArea.getBoundingClientRect();
+        function moveEnemyCars() {
+            enemyCars.forEach((enemyCar, index) => {
+                const enemyCarRect = enemyCar.getBoundingClientRect();
+                const gameAreaRect = gameArea.getBoundingClientRect();
 
-            if (enemyCarRect.top > gameAreaRect.bottom) {
-                enemyCar.style.top = '-100px';
-                enemyCar.style.left = Math.floor(Math.random() * (gameAreaRect.width - enemyCarRect.width)) + 'px';
-                score++;
-                scoreBoard.textContent = score;
-                enemyCarSpeed += 0.1;
-            } else {
-                enemyCar.style.top = enemyCarRect.top - gameAreaRect.top + enemyCarSpeed + 'px';
-            }
+                if (enemyCarRect.top > gameAreaRect.bottom) {
+                    enemyCar.style.top = '-100px';
+                    enemyCar.style.left = Math.floor(Math.random() * (gameAreaRect.width - enemyCarRect.width)) + 'px';
+                    score++;
+                    scoreBoard.textContent = score;
+                    enemyCarSpeed += 0.1;
+                    playerCarSpeed = 10 + score / 10; // Increase player car speed based on score
+                    enemyCar.style.backgroundColor = getRandomColor(); // Change enemy car color
+                    scoreSound.play();
+                } else {
+                    enemyCar.style.top = enemyCarRect.top - gameAreaRect.top + enemyCarSpeed + 'px';
+                }
 
-            if (checkCollision(playerCar, enemyCar)) {
-                endGame();
-            }
+                if (checkCollision(playerCar, enemyCar)) {
+                    collisionSound.play();
+                    endGame();
+                }
+            });
         }
 
         function checkCollision(car1, car2) {
@@ -132,23 +188,41 @@
         }
 
         function startGame() {
-            gameInterval = setInterval(moveEnemyCar, 20);
+            createEnemyCars();
+            gameInterval = setInterval(moveEnemyCars, 20);
         }
 
         function endGame() {
             clearInterval(gameInterval);
-            alert('Game Over! Your score: ' + score);
-            resetGame();
+            gameOverScreen.style.display = 'block';
+            finalScore.textContent = score;
         }
 
         function resetGame() {
             score = 0;
             scoreBoard.textContent = score;
             enemyCarSpeed = 5;
+            playerCarSpeed = 10; // Reset player car speed
             playerCar.style.left = '125px';
-            enemyCar.style.top = '-100px';
-            enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - enemyCar.offsetWidth)) + 'px';
+            enemyCars.forEach((enemyCar) => {
+                enemyCar.style.top = '-100px';
+                enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - enemyCar.offsetWidth)) + 'px';
+            });
+            gameOverScreen.style.display = 'none';
             startGame();
+        }
+
+        function restartGame() {
+            resetGame();
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
 
         startGame();
