@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mecathon</title>
+    <title>Vortexion Racer</title>
     <style>
         body {
             display: flex;
@@ -89,7 +89,7 @@
     </style>
 </head>
 <body>
-    <h1>Mecathon</h1>
+    <h1>Vortexion Racer</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
         <div id="finish-line"></div>
@@ -111,7 +111,7 @@
         const finalTime = document.getElementById('final-time');
         let startTime;
         let gameInterval;
-        let playerCarSpeed = 5;
+        let playerCarSpeed = 2; // Reduced speed
         const finishLineStartDistance = 5000; // Distance to the finish line
         const enemyCars = [];
         const enemyCarCount = 5;
@@ -191,7 +191,7 @@
                     // Reset the car position to the top with a new lane and speed
                     car.style.top = '-100px';
                     car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                    car.speed = Math.random() * 2 + 1;
+                    car.speed = Math.random() * 1 + 1; // Reduced speed
                 } else {
                     car.style.top = carRect.top + car.speed + 'px';
                 }
@@ -228,7 +228,7 @@
             enemyCars.forEach(car => {
                 car.style.top = '-100px';
                 car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                car.speed = Math.random() * 2 + 1;
+                car.speed = Math.random() * 1 + 1; // Reduced speed
             });
             timeBoard.textContent = '0';
             gameOverScreen.style.display = 'none';
@@ -245,7 +245,7 @@
                 car.classList.add('car', 'enemy-car');
                 car.style.top = '-100px';
                 car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                car.speed = Math.random() * 2 + 1;
+                car.speed = Math.random() * 1 + 1; // Reduced speed
                 gameArea.appendChild(car);
                 enemyCars.push(car);
             }
