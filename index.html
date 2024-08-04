@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortexion Racer</title>
+    <title>Mecathon</title>
     <style>
         body {
             display: flex;
@@ -28,7 +28,7 @@
             background-color: #444;
             overflow: hidden;
             border: 2px solid #fff;
-            touch-action: none;
+            touch-action: none; /* Prevent default touch actions */
             background-image: linear-gradient(to bottom, #444 50%, #555 50%);
             background-size: 100% 50px;
             animation: road-animation 0.5s linear infinite;
@@ -86,7 +86,7 @@
     </style>
 </head>
 <body>
-    <h1>Vortexion Racer</h1>
+    <h1>Mecathon</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
         <div id="finish-line"></div>
