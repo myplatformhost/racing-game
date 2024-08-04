@@ -28,7 +28,7 @@
             background-color: #444;
             overflow: hidden;
             border: 2px solid #fff;
-            touch-action: none; /* Prevent default touch actions */
+            touch-action: none;
             background-image: linear-gradient(to bottom, #444 50%, #555 50%);
             background-size: 100% 50px;
             animation: road-animation 0.5s linear infinite;
@@ -55,8 +55,12 @@
             left: 125px;
         }
 
-        .enemy-car {
+        #finish-line {
+            position: absolute;
             top: -100px;
+            width: 300px;
+            height: 20px;
+            background-color: yellow;
         }
 
         #score-board {
@@ -85,61 +89,30 @@
     <h1>Vortexion Racer</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
+        <div id="finish-line"></div>
         <div id="game-over">
-            <h2>Game Over</h2>
-            <p>Score: <span id="final-score">0</span></p>
+            <h2>Race Complete</h2>
+            <p>Time: <span id="final-time">0</span> seconds</p>
             <button onclick="restartGame()">Restart</button>
         </div>
     </div>
     <div id="score-board">
-        <p>Score: <span id="score">0</span></p>
+        <p>Time: <span id="time">0</span> seconds</p>
     </div>
-    <audio id="collision-sound" src="collision.mp3"></audio>
-    <audio id="score-sound" src="score.mp3"></audio>
     <script>
         const gameArea = document.getElementById('game-area');
         const playerCar = document.getElementById('player-car');
-        const scoreBoard = document.getElementById('score');
+        const finishLine = document.getElementById('finish-line');
+        const timeBoard = document.getElementById('time');
         const gameOverScreen = document.getElementById('game-over');
-        const finalScore = document.getElementById('final-score');
-        const collisionSound = document.getElementById('collision-sound');
-        const scoreSound = document.getElementById('score-sound');
-        let score = 0;
+        const finalTime = document.getElementById('final-time');
+        let startTime;
         let gameInterval;
-        let enemyCarSpeed = 5;
-        let playerCarSpeed = 10; // Initial player car speed
-        const enemyCars = [];
-        const numberOfEnemies = 3; // Number of enemy cars
-        const spawnInterval = 1500; // Time in ms between enemy spawns
+        let playerCarSpeed = 5;
 
         document.addEventListener('keydown', movePlayerCar);
         gameArea.addEventListener('touchstart', handleTouchStart);
         gameArea.addEventListener('touchmove', handleTouchMove);
-
-        function createEnemyCar() {
-            const enemyCar = document.createElement('div');
-            enemyCar.classList.add('car', 'enemy-car');
-            let validPosition = false;
-            let leftPosition;
-
-            while (!validPosition) {
-                leftPosition = Math.floor(Math.random() * (gameArea.offsetWidth - 50));
-                validPosition = true;
-
-                for (const car of enemyCars) {
-                    const carRect = car.getBoundingClientRect();
-                    if (Math.abs(carRect.left - leftPosition) < 60) { // Ensuring at least 60px spacing
-                        validPosition = false;
-                        break;
-                    }
-                }
-            }
-
-            enemyCar.style.left = leftPosition + 'px';
-            enemyCar.style.backgroundColor = getRandomColor();
-            gameArea.appendChild(enemyCar);
-            enemyCars.push(enemyCar);
-        }
 
         function movePlayerCar(event) {
             const playerCarRect = playerCar.getBoundingClientRect();
@@ -149,6 +122,10 @@
                 playerCar.style.left = playerCarRect.left - gameAreaRect.left - playerCarSpeed + 'px';
             } else if (event.key === 'ArrowRight' && playerCarRect.right < gameAreaRect.right) {
                 playerCar.style.left = playerCarRect.left - gameAreaRect.left + playerCarSpeed + 'px';
+            } else if (event.key === 'ArrowUp' && playerCarRect.top > gameAreaRect.top) {
+                playerCar.style.top = playerCarRect.top - gameAreaRect.top - playerCarSpeed + 'px';
+            } else if (event.key === 'ArrowDown' && playerCarRect.bottom < gameAreaRect.bottom) {
+                playerCar.style.top = playerCarRect.top - gameAreaRect.top + playerCarSpeed + 'px';
             }
         }
 
@@ -161,92 +138,59 @@
             const touch = event.touches[0];
             const gameAreaRect = gameArea.getBoundingClientRect();
             const touchX = touch.clientX - gameAreaRect.left;
+            const touchY = touch.clientY - gameAreaRect.top;
 
             if (touchX >= 0 && touchX <= gameAreaRect.width) {
                 playerCar.style.left = touchX - playerCar.offsetWidth / 2 + 'px';
             }
+
+            if (touchY >= 0 && touchY <= gameAreaRect.height) {
+                playerCar.style.top = touchY - playerCar.offsetHeight / 2 + 'px';
+            }
         }
 
-        function moveEnemyCars() {
-            enemyCars.forEach((enemyCar, index) => {
-                const enemyCarRect = enemyCar.getBoundingClientRect();
-                const gameAreaRect = gameArea.getBoundingClientRect();
+        function moveFinishLine() {
+            const finishLineRect = finishLine.getBoundingClientRect();
+            const gameAreaRect = gameArea.getBoundingClientRect();
 
-                if (enemyCarRect.top > gameAreaRect.bottom) {
-                    gameArea.removeChild(enemyCar);
-                    enemyCars.splice(index, 1);
-                    score++;
-                    scoreBoard.textContent = score;
-                    enemyCarSpeed += 0.1;
-                    playerCarSpeed = 10 + score / 10; // Increase player car speed based on score
-                    scoreSound.play();
-                } else {
-                    enemyCar.style.top = enemyCarRect.top - gameAreaRect.top + enemyCarSpeed + 'px';
-                }
-
-                if (checkCollision(playerCar, enemyCar)) {
-                    collisionSound.play();
-                    endGame();
-                }
-            });
-        }
-
-        function checkCollision(car1, car2) {
-            const rect1 = car1.getBoundingClientRect();
-            const rect2 = car2.getBoundingClientRect();
-
-            return !(rect1.top > rect2.bottom || 
-                    rect1.bottom < rect2.top || 
-                    rect1.left > rect2.right || 
-                    rect1.right < rect2.left);
+            if (finishLineRect.bottom < gameAreaRect.bottom) {
+                finishLine.style.top = finishLineRect.top - gameAreaRect.top + playerCarSpeed + 'px';
+            } else {
+                endGame();
+            }
         }
 
         function startGame() {
+            startTime = Date.now();
             gameInterval = setInterval(() => {
-                moveEnemyCars();
-                if (enemyCars.length < numberOfEnemies) {
-                    createEnemyCar();
-                }
+                moveFinishLine();
+                updateTime();
             }, 20);
+        }
 
-            setInterval(() => {
-                if (enemyCars.length < numberOfEnemies) {
-                    createEnemyCar();
-                }
-            }, spawnInterval);
+        function updateTime() {
+            const currentTime = Date.now();
+            const elapsedTime = ((currentTime - startTime) / 1000).toFixed(2);
+            timeBoard.textContent = elapsedTime;
         }
 
         function endGame() {
             clearInterval(gameInterval);
             gameOverScreen.style.display = 'block';
-            finalScore.textContent = score;
+            finalTime.textContent = ((Date.now() - startTime) / 1000).toFixed(2);
         }
 
         function resetGame() {
-            score = 0;
-            scoreBoard.textContent = score;
-            enemyCarSpeed = 5;
-            playerCarSpeed = 10; // Reset player car speed
             playerCar.style.left = '125px';
-            enemyCars.forEach((enemyCar) => {
-                gameArea.removeChild(enemyCar);
-            });
-            enemyCars.length = 0; // Clear enemy cars array
+            playerCar.style.top = '';
+            finishLine.style.top = '-100px';
+            timeBoard.textContent = '0';
             gameOverScreen.style.display = 'none';
             startGame();
         }
 
         function restartGame() {
             resetGame();
-        }
-
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
         }
 
         startGame();
