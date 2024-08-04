@@ -59,13 +59,6 @@
             background-color: blue;
         }
 
-        #finish-line {
-            position: absolute;
-            width: 300px;
-            height: 20px;
-            background-color: yellow;
-        }
-
         #score-board {
             margin: 20px;
             font-size: 24px;
@@ -92,30 +85,33 @@
     <h1>Vortexion Racer</h1>
     <div id="game-area">
         <div id="player-car" class="car"></div>
-        <div id="finish-line"></div>
         <div id="game-over">
             <h2>Game Over</h2>
             <p>Time: <span id="final-time">0</span> seconds</p>
+            <p>Score: <span id="final-score">0</span></p>
             <button onclick="restartGame()">Restart</button>
         </div>
     </div>
     <div id="score-board">
         <p>Time: <span id="time">0</span> seconds</p>
+        <p>Score: <span id="score">0</span></p>
     </div>
     <script>
         const gameArea = document.getElementById('game-area');
         const playerCar = document.getElementById('player-car');
-        const finishLine = document.getElementById('finish-line');
         const timeBoard = document.getElementById('time');
+        const scoreBoard = document.getElementById('score');
         const gameOverScreen = document.getElementById('game-over');
         const finalTime = document.getElementById('final-time');
+        const finalScore = document.getElementById('final-score');
         let startTime;
         let gameInterval;
-        let playerCarSpeed = 2; // Reduced speed
-        const finishLineStartDistance = 5000; // Distance to the finish line
+        let playerCarSpeed = 2; // Initial speed
+        const maxScore = 100; // Score required to reach the finish line
         const enemyCars = [];
         const enemyCarCount = 5;
         const lanes = [25, 125, 225]; // Possible positions for cars
+        let score = 0;
 
         document.addEventListener('keydown', movePlayerCar);
         gameArea.addEventListener('touchstart', handleTouchStart);
@@ -156,25 +152,15 @@
             }
         }
 
-        function moveFinishLine() {
-            const finishLineRect = finishLine.getBoundingClientRect();
-            const gameAreaRect = gameArea.getBoundingClientRect();
-
-            if (finishLineRect.bottom < gameAreaRect.bottom) {
-                finishLine.style.top = finishLineRect.top - gameAreaRect.top + playerCarSpeed + 'px';
-            } else {
-                endGame();
-            }
-        }
-
         function startGame() {
             startTime = Date.now();
-            finishLine.style.top = `-${finishLineStartDistance}px`; // Start the finish line far above the game area
             gameInterval = setInterval(() => {
-                moveFinishLine();
                 updateEnemyCars();
                 updateTime();
                 checkCollisions();
+                increaseSpeed();
+                updateScore();
+                checkFinishLine();
             }, 20);
         }
 
@@ -191,7 +177,7 @@
                     // Reset the car position to the top with a new lane and speed
                     car.style.top = '-100px';
                     car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                    car.speed = Math.random() * 1 + 1; // Reduced speed
+                    car.speed = Math.random() * 1 + 1; // Speed range between 1 and 2
                 } else {
                     car.style.top = carRect.top + car.speed + 'px';
                 }
@@ -200,8 +186,6 @@
 
         function checkCollisions() {
             const playerRect = playerCar.getBoundingClientRect();
-            const gameAreaRect = gameArea.getBoundingClientRect();
-
             enemyCars.forEach(car => {
                 const carRect = car.getBoundingClientRect();
                 if (
@@ -215,22 +199,42 @@
             });
         }
 
+        function increaseSpeed() {
+            if (score % 10 === 0) {
+                playerCarSpeed += 0.1; // Increase speed every 10 points
+            }
+        }
+
+        function updateScore() {
+            score++;
+            scoreBoard.textContent = score;
+        }
+
+        function checkFinishLine() {
+            if (score >= maxScore) {
+                endGame();
+            }
+        }
+
         function endGame() {
             clearInterval(gameInterval);
             gameOverScreen.style.display = 'block';
             finalTime.textContent = ((Date.now() - startTime) / 1000).toFixed(2);
+            finalScore.textContent = score;
         }
 
         function resetGame() {
             playerCar.style.left = '125px';
             playerCar.style.top = '';
-            finishLine.style.top = `-${finishLineStartDistance}px`; // Reset the finish line position
+            score = 0;
+            playerCarSpeed = 2; // Reset initial speed
             enemyCars.forEach(car => {
                 car.style.top = '-100px';
                 car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                car.speed = Math.random() * 1 + 1; // Reduced speed
+                car.speed = Math.random() * 1 + 1; // Speed range between 1 and 2
             });
             timeBoard.textContent = '0';
+            scoreBoard.textContent = '0';
             gameOverScreen.style.display = 'none';
             startGame();
         }
@@ -245,7 +249,7 @@
                 car.classList.add('car', 'enemy-car');
                 car.style.top = '-100px';
                 car.style.left = lanes[Math.floor(Math.random() * lanes.length)] + 'px';
-                car.speed = Math.random() * 1 + 1; // Reduced speed
+                car.speed = Math.random() * 1 + 1; // Speed range between 1 and 2
                 gameArea.appendChild(car);
                 enemyCars.push(car);
             }
