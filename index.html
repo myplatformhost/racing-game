@@ -119,7 +119,23 @@
         function createEnemyCar() {
             const enemyCar = document.createElement('div');
             enemyCar.classList.add('car', 'enemy-car');
-            enemyCar.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
+            let validPosition = false;
+            let leftPosition;
+
+            while (!validPosition) {
+                leftPosition = Math.floor(Math.random() * (gameArea.offsetWidth - 50));
+                validPosition = true;
+
+                for (const car of enemyCars) {
+                    const carRect = car.getBoundingClientRect();
+                    if (Math.abs(carRect.left - leftPosition) < 60) { // Ensuring at least 60px spacing
+                        validPosition = false;
+                        break;
+                    }
+                }
+            }
+
+            enemyCar.style.left = leftPosition + 'px';
             enemyCar.style.backgroundColor = getRandomColor();
             gameArea.appendChild(enemyCar);
             enemyCars.push(enemyCar);
