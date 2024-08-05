@@ -200,7 +200,7 @@
         }
 
         function increaseSpeed() {
-            if (score % 10 === 0) {
+            if (score % 10 === 0 && score !== 0) {
                 playerCarSpeed += 0.1; // Increase speed every 10 points
             }
         }
@@ -212,13 +212,21 @@
 
         function checkFinishLine() {
             if (score >= maxScore) {
-                endGame();
+                winGame();
             }
         }
 
         function endGame() {
             clearInterval(gameInterval);
             gameOverScreen.style.display = 'block';
+            finalTime.textContent = ((Date.now() - startTime) / 1000).toFixed(2);
+            finalScore.textContent = score;
+        }
+
+        function winGame() {
+            clearInterval(gameInterval);
+            gameOverScreen.style.display = 'block';
+            gameOverScreen.querySelector('h2').textContent = 'You Win!';
             finalTime.textContent = ((Date.now() - startTime) / 1000).toFixed(2);
             finalScore.textContent = score;
         }
@@ -236,6 +244,7 @@
             timeBoard.textContent = '0';
             scoreBoard.textContent = '0';
             gameOverScreen.style.display = 'none';
+            gameOverScreen.querySelector('h2').textContent = 'Game Over';
             startGame();
         }
 
@@ -243,7 +252,8 @@
             resetGame();
         }
 
-        function createEnemyCars() {
+       
+                function createEnemyCars() {
             for (let i = 0; i < enemyCarCount; i++) {
                 const car = document.createElement('div');
                 car.classList.add('car', 'enemy-car');
@@ -260,3 +270,4 @@
     </script>
 </body>
 </html>
+                
