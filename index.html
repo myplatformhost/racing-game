@@ -19,7 +19,6 @@
             background-color: red;
             position: absolute;
             bottom: 120px;
-            background-image: url(Images/car.jpg);
             background-size: cover;
         }
         .GameArea {
@@ -474,6 +473,8 @@
         }
         if (chosen.value == "Lamborghini") {
             player.speed = 16;
+            car.style.backgroundImage="url(img/Lambo.jpg)";
+            
         }
 
         startscreen.classList.add('hide');
