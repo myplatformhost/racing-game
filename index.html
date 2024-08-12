@@ -16,7 +16,7 @@
         .car {
             width: 50px;
             height: 70px;
-            background-color:orange;
+            background-position: center;
             position: absolute;
             bottom: 120px;
             background-size: cover;
@@ -462,52 +462,56 @@
     }
 
     function start() {
-        if (chosen.value == "Jeep") {
-            player.speed = 10;
-        }
-        if (chosen.value == "Bugatti") {
-            player.speed = 13;
-        }
-        if (chosen.value == "Mercedes Benz") {
-            player.speed = 8;
-        }
-        if (chosen.value == "Lamborghini") {
-            player.speed = 16;
-            car.style.backgroundImage="url(img/Lambo.jpg)";
-            
-        }
-
-        startscreen.classList.add('hide');
-        gamearea.innerHTML = "";
-
-        player.start = true;
-        player.score = 0;
-        window.requestAnimationFrame(gamePlay);
-
-        for (x = 0; x < 5; x++) {
-            let roadline = document.createElement('div');
-            roadline.setAttribute('class', 'lines');
-            roadline.y = (x * 150);
-            roadline.style.top = roadline.y + 'px';
-            gamearea.appendChild(roadline);
-        }
-
-        let car = document.createElement('div');
-        car.setAttribute('class', 'car');
-        gamearea.appendChild(car);
-
-        player.x = car.offsetLeft;
-        player.y = car.offsetTop;
-
-        for (x = 0; x < 3; x++) {
-            let othercar = document.createElement('div');
-            othercar.setAttribute('class', 'other');
-            othercar.y = ((x + 1) * 350) * -1;
-            othercar.style.top = othercar.y + 'px';
-            othercar.style.left = Math.floor(Math.random() * 350) + 'px';
-            gamearea.appendChild(othercar);
-        }
+    const car = document.querySelector('.car');
+    
+    if (chosen.value == "Jeep") {
+        player.speed = 10;
+        car.style.backgroundImage = "url('./img/Jeep.jpg')";
     }
+    if (chosen.value == "Bugatti") {
+        player.speed = 13;
+        car.style.backgroundImage = "url('./img/Bugatti.jpg')";
+    }
+    if (chosen.value == "Mercedes Benz") {
+        player.speed = 8;
+        car.style.backgroundImage = "url('./img/Mercedes.jpg')";
+    }
+    if (chosen.value == "Lamborghini") {
+        player.speed = 16;
+        car.style.backgroundImage = "url('./img/Lambo.jpg')";
+    }
+
+    startscreen.classList.add('hide');
+    gamearea.innerHTML = "";
+
+    player.start = true;
+    player.score = 0;
+    window.requestAnimationFrame(gamePlay);
+
+    for (let x = 0; x < 5; x++) {
+        let roadline = document.createElement('div');
+        roadline.setAttribute('class', 'lines');
+        roadline.y = (x * 150);
+        roadline.style.top = roadline.y + 'px';
+        gamearea.appendChild(roadline);
+    }
+
+    gamearea.appendChild(car);
+
+    player.x = car.offsetLeft;
+    player.y = car.offsetTop;
+
+    for (let x = 0; x < 3; x++) {
+        let othercar = document.createElement('div');
+        othercar.setAttribute('class', 'other');
+        othercar.y = ((x + 1) * 350) * -1;
+        othercar.style.top = othercar.y + 'px';
+        othercar.style.left = Math.floor(Math.random() * 350) + 'px';
+        gamearea.appendChild(othercar);
+    }
+}
+    
+
 </script>
     
 </body>
