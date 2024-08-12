@@ -273,7 +273,9 @@
         <img class="car-image" onclick="document.getElementById('chosen-car').value='Mercedes Benz'" src="./img/mercedes-benz.jpg"/>
         <img class="car-image" onclick="document.getElementById('chosen-car').value='Lamborghini'" src="./img/lamborghini.jpg"/>
         <img class="car-image" onclick="document.getElementById('chosen-car').value='Bugatti'" src="./img/bugatti.png"/>
-        <img class="car-image" src="./img/driver.jpg"/>
+<img class="car-image" onclick="document.getElementById('chosen-car').value='F1'" src="./img/driver.jpg"/>
+        
+        
     </div>
 
 </div>
@@ -305,7 +307,8 @@
         <center>
        <div class="StartScreen">
             <p>Start Game by clicking Here<br><br>Arrow Keys or Touch to move<br><br>If you hit another car you will lose</p>
-            <button onclick="Reset()">Reset Highest Score</button>
+           <button onclick"start()">Start Game</button>
+           <button onclick="Reset()">Reset Highest Score</button>
         </div>
     </center>
         <div class="GameArea"></div>
@@ -480,6 +483,10 @@
         player.speed = 16;
         car.style.backgroundImage = "url('./img/Lambo.jpg')";
     }
+        if (chosen.value == "F1") {
+        player.speed = 18;
+        car.style.backgroundImage = "url('./img/Lambo.jpg')";
+    
 
     startscreen.classList.add('hide');
     gamearea.innerHTML = "";
