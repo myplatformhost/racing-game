@@ -22,8 +22,7 @@
             background-size: cover;
         }
         .GameArea {
-            width: 90%;
-            max-width: 400px;
+            width: 400px;
             height: 100vh;
             background-color: rgb(29, 26, 26);
             margin: auto;
@@ -37,8 +36,7 @@
             height: 100px;
             background: white;
             position: absolute;
-            margin-left: 50%;
-            transform: translateX(-50%);
+            margin-left: 195px;
         }
         .CarGame {
             background-image: url(./img/grass.jpg);
@@ -105,10 +103,10 @@
             cursor: pointer;
             user-select: none;
         }
-        .none {
+        .none{
             display: none;
         }
-        #race {
+        #race{
             width: 100%;
             height: 100vh;
             background-image: url(img/speed.jpg);
@@ -116,26 +114,32 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+           
         }
-        .race-title {
-            color: cornsilk;
-            padding-top: 295px;
-            font-family: cursive;
-            font-weight: bolder;
-            animation-name: race;
-            animation-duration: 2s;
-            animation-direction: alternate;
-            animation-iteration-count: infinite;
+
+
+        .race-title{
+        color: cornsilk;
+        padding-top: 295px;
+        font-family: cursive;
+        font-weight: bolder;
+        font-smooth: revert;
+        animation-name: race;
+        animation-duration: 2s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
         }
-        @keyframes race {
-            0% {
+
+        @keyframes race{
+            0%{
                 font-size: 30px;
             }
-            100% {
+            100%{
                 font-size: 40px;
             }
         }
-        .gamemenu {
+
+        .gamemenu{
             width: 100%;
             height: 100vh;
             background-image: url(img/fire.jpeg);
@@ -143,8 +147,10 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+
         }
-        .menu {
+
+        .menu{
             position: fixed;
             bottom: 5px;
             background: transparent;
@@ -156,17 +162,19 @@
             flex-direction: row;
             justify-content: space-evenly;
         }
-        .menua {
-            padding: 10px 12px;
-            background-color: transparent;
-            transform: skew(10deg, 0deg);
-            border: 1px solid orangered;
-        }
-        .menua:hover {
-            background-color: orangered;
-            transition: 0.3s;
-        }
-        .gamemenu button {
+
+.menua{
+    padding: 10px 12px;
+    background-color: transparent;
+    transform: skew(10deg,0deg);
+    border: 1px solid orangered;
+}
+
+.menua:hover{
+    background-color: orangered;
+    transition: 0.3s;
+}
+        .gamemenu button{
             position: fixed;
             bottom: 5px;
             right: 5px;
@@ -178,259 +186,339 @@
             border: none;
             cursor: pointer;
         }
-        .points1 {
+
+        .points1{
             background-color: orange;
             color: white;
             padding: 10px 12px;
-            transform: skew(-10deg, 0deg);
+            transform: skew(-10deg,0deg);
         }
-        .points2 {
+         .points2{
             background-color: red;
             color: white;
             padding: 10px 12px;
-            transform: skew(-10deg, 0deg);
+            transform: skew(-10deg,0deg);
         }
-        .point {
-            position: fixed;
-            width: auto;
-            padding: 10px 12px;
-            top: 10px;
-            left: 0;
-            display: flex;
-            flex-direction: row;
-        }
-        .share {
+
+.point{
+    position: fixed;
+    width: auto;
+    padding: 10px 12px;
+    top: 10px;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+
+}
+.share{
             background-color: lightgreen;
             color: white;
             padding: 10px 20px;
             position: fixed;
             right: 10px;
             top: 5px;
-            transform: skew(10deg, 0deg);
+            transform: skew(10deg,0deg);
         }
-        .choose-car {
+
+        .choose-car{
             width: 100%;
             height: auto;
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            overflow: scroll;
             overflow-x: scroll;
             overflow-y: hidden;
             scrollbar-width: thin;
         }
-        .car-image {
-            width: 400px;
-            padding: 5px;
-            height: 250px;
-            transform: skew(-10deg, 0deg);
-        }
-        /* Media Query for smaller screens */
-        @media (max-width: 768px) {
-            .car-image {
-                width: 200px;
-                height: 125px;
-            }
-            .menu {
-                width: 60%;
-            }
-        }
+
+.car-image{
+    width: 400px;
+    padding: 5px;
+    height: 250px;
+    transform: skew(-10deg,0deg);
+}
     </style>
+
 </head>
 <body onload="Racing()">
     <div id="race">
-        <center>
-            <h1 class="race-title"><span style="color: orange; font-size: 50px; font-weight: bolder; font-family: cursive;">MEC</span>athon</h1>
-        </center>
+     <center>
+        <h1 class="race-title"><span style="color: orange;font-size: 50px; font-weight:bolder;font-family: cursive;">MEC</span>athon</h1>
+    </center>
     </div>
 
     <div id="gamemenu" class="gamemenu none">
-        <div class="point">
-            <div class="points1"></div>
-            <div class="points2">Points ++</div>
-        </div>
 
-        <center>
-            <input type="text" id="chosen-car" style="padding: 10px 12px; border: none;" readonly>
-            <input type="hidden" id="speed-car" readonly>
-        </center>
+<div class="point">
+    <div class="points1">
+</div>
 
-        <div style="padding-top: 180px;">
-            <p style="color: white; font-size: 30px; font-family: cursive; text-align: center;">Select a car</p>
-            <div class="choose-car">
-                <img class="car-image" onclick="selectCar('Jeep', 10)" src="./img/jeep.jpg" />
-                <img class="car-image" onclick="selectCar('Mercedes Benz', 8)" src="./img/mercedes-benz.jpg"/>
-                <img class="car-image" onclick="selectCar('Lamborghini', 16)" src="./img/lamborghini.jpg"/>
-                <img class="car-image" onclick="selectCar('Bugatti', 13)" src="./img/bugatti.png"/>
-                <img class="car-image" onclick="selectCar('F1', 18)" src="./img/driver.jpg"/>
-            </div>
-        </div>
+ <div class="points2">
 
-        <div class="share">share</div>
+    Points ++
+</div>
+</div>
+
+<center>
+<input type="text" id="chosen-car" style="padding:10px 12px;border: none;" readonly>
+<input type="hidden" id="speed-car" readonly>
+
+</center>
+<div style="padding-top: 180px;">
+    <p style="color:white;font-size: 30px;font-family: cursive;text-align: center;">Select a car</p>
+    <div class="choose-car">
+        <img class="car-image" onclick="document.getElementById('chosen-car').value='Jeep'" src="./img/jeep.jpg" />
+        <img class="car-image" onclick="document.getElementById('chosen-car').value='Mercedes Benz'" src="./img/mercedes-benz.jpg"/>
+        <img class="car-image" onclick="document.getElementById('chosen-car').value='Lamborghini'" src="./img/lamborghini.jpg"/>
+        <img class="car-image" onclick="document.getElementById('chosen-car').value='Bugatti'" src="./img/bugatti.png"/>
+<img class="car-image" onclick="document.getElementById('chosen-car').value='F1'" src="./img/driver.jpg"/>
+        
+        
+    </div>
+
+</div>
+
+<div class="share">
+    share
+</div>
 
         <div class="menu">
-            <div class="menua"><a>Home</a></div>
-            <div class="menua"><a>Help</a></div>
-            <div class="menua"><a>Online Race</a></div>
+            <div class="menua">
+            <a>Home</a>
+        </div>
+        <div class="menua">
+            <a>Help</a>
         </div>
 
-        <button onclick="CheckStart()">Start</button>
+         <div class="menua">
+            <a>Online Race</a>
+        </div>
+            
+              
+        </div>
+
+<button onclick="CheckStart()">Start</button>
     </div>
 
     <div class="CarGame none" id="gamemode">
         <div class="Score"></div>
         <center>
-            <div class="StartScreen">
-                <p>Start Game by clicking Here<br><br>Arrow Keys or Touch to move<br><br>If you hit another car you will lose</p>
-                <button onclick="start()">Start Game</button>
-                <button onclick="Reset()">Reset Highest Score</button>
-            </div>
-        </center>
+       <div class="StartScreen">
+            <p>Start Game by clicking Here<br><br>Arrow Keys or Touch to move<br><br>If you hit another car you will lose</p>
+           <button onclick="Reset()">Reset Highest Score</button>
+        </div>
+    </center>
         <div class="GameArea"></div>
-        <div<div class="controls">
-            <div class="control-btn" onclick="moveLeft()">⬅️</div>
-            <div class="control-btn" onclick="moveRight()">➡️</div>
+        <div class="controls">
+            <div class="control-btn" data-direction="left">←</div>
+            <div class="control-btn" data-direction="up">↑</div>
+            <div class="control-btn" data-direction="down">↓</div>
+            <div class="control-btn" data-direction="right">→</div>
         </div>
     </div>
+<script>
+    function Racing() {
+        setTimeout(() => {
+            document.getElementById("race").style.display = "none";
+            document.getElementById("gamemenu").style.display = "block";
+        }, 3000);
+    }
 
-    <script>
-        let player = { speed: 5, score: 0, carSelected: false };
-        const gameArea = document.querySelector('.GameArea');
-        const gameMode = document.getElementById('gamemode');
-        const gameMenu = document.getElementById('gamemenu');
-        const chosenCar = document.getElementById('chosen-car');
-        const speedCar = document.getElementById('speed-car');
-        let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+    const score = document.querySelector('.Score');
+    var carspeed = document.getElementById("speed-car").value;
+    var chosen = document.getElementById('chosen-car');
 
-        document.addEventListener('keydown', pressOn);
-        document.addEventListener('keyup', pressOff);
-
-        function Racing() {
-            gameMenu.classList.remove('none');
+    function CheckStart() {
+        if (chosen.value == "") {
+            alert("Please choose a car");
+        } else {
+            document.getElementById('gamemode').style.display = "block";
+            document.getElementById('gamemenu').style.display = "none";
         }
+    }
 
-        function selectCar(car, speed) {
-            chosenCar.value = car;
-            speedCar.value = speed;
-            player.carSelected = true;
-        }
+    const startscreen = document.querySelector('.StartScreen');
+    const gamearea = document.querySelector('.GameArea');
+    var player = { speed: 5, score: 0 };
+    let highest = 0;
+    let level = 1;
 
-        function CheckStart() {
-            if (player.carSelected) {
-                gameMenu.classList.add('none');
-                gameMode.classList.remove('none');
-            } else {
-                alert('Please select a car first!');
+    startscreen.addEventListener('click', start);
+
+    let keys = { ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false };
+
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('keyup', keyUp);
+
+    document.querySelectorAll('.control-btn').forEach(btn => {
+        btn.addEventListener('touchstart', touchStart);
+        btn.addEventListener('touchend', touchEnd);
+    });
+
+    function touchStart(e) {
+        const direction = e.target.dataset.direction;
+        keys[`Arrow${capitalize(direction)}`] = true;
+    }
+
+    function touchEnd(e) {
+        const direction = e.target.dataset.direction;
+        keys[`Arrow${capitalize(direction)}`] = false;
+    }
+
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function keyDown(ev) {
+        ev.preventDefault();
+        keys[ev.key] = true;
+    }
+
+    function keyUp(ev) {
+        ev.preventDefault();
+        keys[ev.key] = false;
+    }
+
+    function isCollide(a, b) {
+        aRect = a.getBoundingClientRect();
+        bRect = b.getBoundingClientRect();
+
+        return !((aRect.bottom < bRect.top) || (aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right));
+    }
+
+    function moveLines() {
+        let lines = document.querySelectorAll('.lines');
+        lines.forEach(function(item) {
+            if (item.y >= 700) {
+                item.y -= 750;
+            }
+            item.y += player.speed;
+            item.style.top = item.y + 'px';
+        });
+    }
+
+    function endGame() {
+        player.start = false;
+        startscreen.classList.remove('hide');
+    }
+
+    function moveCar(car) {
+        let other = document.querySelectorAll('.other');
+        other.forEach(function(item) {
+            if (isCollide(car, item)) {
+                console.log('HIT');
+                endGame();
+            }
+            if (item.y >= 750) {
+                item.y = -300;
+                item.style.left = Math.floor(Math.random() * 350) + 'px';
+            }
+            item.y += player.speed;
+            item.style.top = item.y + 'px';
+        });
+    }
+
+    function gamePlay() {
+        let car = document.querySelector('.car');
+        let road = gamearea.getBoundingClientRect();
+
+        if (player.start) {
+            moveLines();
+            moveCar(car);
+            if (keys.ArrowUp && player.y > (road.top + 70)) {
+                player.y -= player.speed;
+            }
+            if (keys.ArrowDown && player.y < (road.bottom - 70)) {
+                player.y += player.speed;
+            }
+            if (keys.ArrowLeft && player.x > 0) {
+                player.x -= player.speed;
+            }
+            if (keys.ArrowRight && player.x < (road.width - 50)) {
+                player.x += player.speed;
+            }
+
+            car.style.top = player.y + 'px';
+            car.style.left = player.x + 'px';
+
+            window.requestAnimationFrame(gamePlay);
+
+            player.score++;
+            if (player.score >= highest) {
+                highest = player.score;
+            }
+
+            score.innerHTML = "Your Score: " + player.score + "<br><br>" + "Highest Score: " + highest;
+
+            if (player.score % 3000 === 0) {
+                player.speed++;
+                level++;
             }
         }
+    }
 
-        function start() {
-            const startScreen = document.querySelector('.StartScreen');
-            startScreen.classList.add('hide');
-            player.start = true;
-            player.score = 0;
-            gameArea.innerHTML = '';
+    function Reset() {
+        highest = 0;
+    }
 
-            const car = document.createElement('div');
-            car.setAttribute('class', 'car');
-            car.style.backgroundImage = `url('./img/${chosenCar.value.toLowerCase().replace(' ', '-')}.jpg')`;
-            gameArea.appendChild(car);
-
-            player.x = car.offsetLeft;
-            player.y = car.offsetTop;
-
-            window.requestAnimationFrame(playGame);
-        }
-
-        function playGame() {
-            let car = document.querySelector('.car');
-            let road = gameArea.getBoundingClientRect();
-
-            if (player.start) {
-                moveLines();
-                moveEnemy(car);
-                if (keys.ArrowUp && player.y > road.top) { player.y -= player.speed; }
-                if (keys.ArrowDown && player.y < (road.bottom - car.offsetHeight)) { player.y += player.speed; }
-                if (keys.ArrowLeft && player.x > 0) { player.x -= player.speed; }
-                if (keys.ArrowRight && player.x < (road.width - car.offsetWidth)) { player.x += player.speed; }
-
-                car.style.top = player.y + 'px';
-                car.style.left = player.x + 'px';
-
-                window.requestAnimationFrame(playGame);
-                player.score++;
-                document.querySelector('.Score').innerText = "Score: " + player.score;
+    function start() {
+    const car = document.querySelector('.car');
+    
+    if (chosen.value == "Jeep") {
+        player.speed = 10;
+        car.style.backgroundImage = "url('./img/Jeep.jpg')";
+    }
+    if (chosen.value == "Bugatti") {
+        player.speed = 13;
+        car.style.backgroundImage = "url('./img/Bugatti.jpg')";
+    }
+    if (chosen.value == "Mercedes Benz") {
+        player.speed = 8;
+        car.style.backgroundImage = "url('./img/Mercedes.jpg')";
+    }
+    if (chosen.value == "Lamborghini") {
+        player.speed = 16;
+        car.style.backgroundImage = "url('./img/Lambo.jpg')";
+    }
+        if (chosen.value == "F1") {
+        player.speed = 18;
+        car.style.backgroundImage = "url('./img/Lambo.jpg')";
+    
             }
-        }
+    startscreen.classList.add('hide');
+    gamearea.innerHTML = "";
 
-        function pressOn(e) {
-            e.preventDefault();
-            keys[e.key] = true;
-        }
+    player.start = true;
+    player.score = 0;
+    window.requestAnimationFrame(gamePlay);
 
-        function pressOff(e) {
-            e.preventDefault();
-            keys[e.key] = false;
-        }
+    for (let x = 0; x < 5; x++) {
+        let roadline = document.createElement('div');
+        roadline.setAttribute('class', 'lines');
+        roadline.y = (x * 150);
+        roadline.style.top = roadline.y + 'px';
+        gamearea.appendChild(roadline);
+    }
 
-        function moveLines() {
-            let lines = document.querySelectorAll('.lines');
-            lines.forEach(function (item) {
-                if (item.y >= 700) {
-                    item.y -= 750;
-                }
-                item.y += player.speed;
-                item.style.top = item.y + 'px';
-            });
-        }
+    gamearea.appendChild(car);
 
-        function moveEnemy(car) {
-            let enemies = document.querySelectorAll('.other');
-            enemies.forEach(function (item) {
-                if (isCollide(car, item)) {
-                    endGame();
-                }
-                if (item.y >= 700) {
-                    item.y = -300;
-                    item.style.left = Math.floor(Math.random() * 350) + 'px';
-                }
-                item.y += player.speed;
-                item.style.top = item.y + 'px';
-            });
-        }
+    player.x = car.offsetLeft;
+    player.y = car.offsetTop;
 
-        function isCollide(a, b) {
-            let aRect = a.getBoundingClientRect();
-            let bRect = b.getBoundingClientRect();
-
-            return !(
-                (aRect.bottom < bRect.top) ||
-                (aRect.top > bRect.bottom) ||
-                (aRect.right < bRect.left) ||
-                (aRect.left > bRect.right)
-            );
-        }
-
-        function endGame() {
-            player.start = false;
-            const startScreen = document.querySelector('.StartScreen');
-            startScreen.classList.remove('hide');
-            startScreen.innerHTML = 'Game Over<br>Score was ' + player.score + '<br>Click here to restart the game';
-        }
-
-        function Reset() {
-            localStorage.removeItem('highscore');
-            alert('Highest score reset!');
-        }
-
-        function moveLeft() {
-            keys.ArrowLeft = true;
-            setTimeout(() => keys.ArrowLeft = false, 100);
-        }
-
-        function moveRight() {
-            keys.ArrowRight = true;
-            setTimeout(() => keys.ArrowRight = false, 100);
-        }
-    </script>
+    for (let x = 0; x < 3; x++) {
+        let othercar = document.createElement('div');
+        othercar.setAttribute('class', 'other');
+        othercar.y = ((x + 1) * 350) * -1;
+        othercar.style.top = othercar.y + 'px';
+        othercar.style.left = Math.floor(Math.random() * 350) + 'px';
+        gamearea.appendChild(othercar);
+    }
+}
+    
+            
+</script>
+    
 </body>
 </html>
+
