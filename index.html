@@ -469,36 +469,37 @@
     }
 
     function start() {
-    const car = document.querySelector('.car');
-    
+    const car = document.createElement('div');
+    car.setAttribute('class', 'car');
+
     if (chosen.value == "Jeep") {
         player.speed = 10;
-        car.style.backgroundImage = "url('./img/Jeep.jpg')";
+        car.style.backgroundImage = "url('./img/jeep.jpg')";
     }
     if (chosen.value == "Bugatti") {
         player.speed = 13;
-        car.style.backgroundImage = "url('./img/Bugatti.jpg')";
+        car.style.backgroundImage = "url('./img/bugatti.png')";
     }
     if (chosen.value == "Mercedes Benz") {
         player.speed = 8;
-        car.style.backgroundImage = "url('./img/Mercedes.jpg')";
+        car.style.backgroundImage = "url('./img/mercedes-benz.jpg')";
     }
     if (chosen.value == "Lamborghini") {
         player.speed = 16;
-        car.style.backgroundImage = "url('./img/Lambo.jpg')";
+        car.style.backgroundImage = "url('./img/lamborghini.jpg')";
     }
-        if (chosen.value == "F1") {
+    if (chosen.value == "F1") {
         player.speed = 18;
-        car.style.backgroundImage = "url('./img/Lambo.jpg')";
-    
-            }
+        car.style.backgroundImage = "url('./img/driver.jpg')";
+    }
+
     startscreen.classList.add('hide');
     gamearea.innerHTML = "";
 
     player.start = true;
     player.score = 0;
-    window.requestAnimationFrame(gamePlay);
 
+    // Add road lines
     for (let x = 0; x < 5; x++) {
         let roadline = document.createElement('div');
         roadline.setAttribute('class', 'lines');
@@ -507,11 +508,13 @@
         gamearea.appendChild(roadline);
     }
 
+    // Append the car to the game area
     gamearea.appendChild(car);
 
     player.x = car.offsetLeft;
     player.y = car.offsetTop;
 
+    // Add other cars
     for (let x = 0; x < 3; x++) {
         let othercar = document.createElement('div');
         othercar.setAttribute('class', 'other');
@@ -520,9 +523,9 @@
         othercar.style.left = Math.floor(Math.random() * 350) + 'px';
         gamearea.appendChild(othercar);
     }
-}
-    
-            
+
+    window.requestAnimationFrame(gamePlay);
+}           
 </script>
     
 </body>
