@@ -496,7 +496,10 @@
         player.speed = 18;
         car.style.backgroundImage = "url('./img/driver.jpg')";
     }
-
+var moving= new Audio();
+        moving.src="./img/Move.mp3";
+        moving.play();
+        
     startscreen.classList.add('hide');
     gamearea.innerHTML = "";
 
