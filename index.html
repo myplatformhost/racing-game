@@ -414,6 +414,9 @@
         other.forEach(function(item) {
             if (isCollide(car, item)) {
                 console.log('HIT');
+                var crush= new Audio();
+                crush.src='./img/Crush.mp3';
+                crush.play()
                 endGame();
             }
             if (item.y >= 750) {
