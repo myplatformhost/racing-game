@@ -45,7 +45,8 @@
         .other {
             width: 50px;
             height: 70px;
-            background-color: blue;
+            background-position: center;
+            background-size:cover;
             position: absolute;
             bottom: 120px;
         }
@@ -521,6 +522,10 @@
     for (let x = 0; x < 3; x++) {
         let othercar = document.createElement('div');
         othercar.setAttribute('class', 'other');
+        var cars=["./img/Lambo.jpg","./img/Mercedes.jpg","./img/Jeep.jpg"];
+        var random=Math.floor(Math.random()* cars.length);
+        
+        othercar.style.backgroundImage="url(cars[random])";
         othercar.y = ((x + 1) * 350) * -1;
         othercar.style.top = othercar.y + 'px';
         othercar.style.left = Math.floor(Math.random() * 350) + 'px';
