@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <title>Mecathon</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .hide {
+            display: none;
+        }
+        .car {
+            width: 50px;
+            height: 70px;
+            background-position: center;
+            position: absolute;
+            bottom: 120px;
+            background-size: cover;
+        }
+        .GameArea {
+            width: 400px;
+            height: 100vh;
+            background-color: rgb(29, 26, 26);
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+            border-left: 10px dashed white;
+            border-right: 10px dashed white;
+        }
+        .lines {
+            width: 10px;
+            height: 100px;
+            background: white;
+            position: absolute;
+            margin-left: 195px;
+        }
+        .CarGame {
+            background-image: url(./img/grass.jpg);
+            background-size: cover;
+        }
+        .other {
+            width: 50px;
+            height: 70px;
+            background-position: center;
+            background-size:cover;
+            position: absolute;
+            bottom: 120px;
+        }
+        .Score {
+            position: absolute;
+            top: 15px;
+            text-align: center;
+            padding-top: 23px;
+            font-size: 15px;
+            background-color: black;
+            color: white;
+            padding: 10px 12px;
+        }
+        .StartScreen {
+            position: absolute;
+            background-color: orange;
+            color: white;
+            z-index: 1;
+            margin-top: 210px;
+            margin-left: 25%;
+            margin-right: 25%;
+            text-align: center;
+            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            width: 50%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 20px;
+            padding: 10px 12px;
+        }
+        .StartScreen button {
+            padding: 10px;
+            text-align: center;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 20px;
+        }
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        .none{
+            display: none;
+        }
+        #race{
+            width: 100%;
+            height: 100vh;
+            background-image: url(img/speed.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+           
+        }
+
+
+        .race-title{
+        color: cornsilk;
+        padding-top: 295px;
+        font-family: cursive;
+        font-weight: bolder;
+        font-smooth: revert;
+        animation-name: race;
+        animation-duration: 2s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+        }
+
+        @media only screen and (min-width:800px){
+            .race-title{
+                padding-top:500px;
+            }
+        }
+
+        @keyframes race{
+            0%{
+                font-size: 30px;
+            }
+            100%{
+                font-size: 40px;
+            }
+        }
+
+        .gamemenu{
+            width: 100%;
+            height: 100vh;
+            background-image: url(img/fire.jpeg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+        }
+
+        .menu{
+            position: fixed;
+            top: 0;
+            background: rgba(0, 128, 128, 0.5);
+            width: 100%;
+            padding: 10px 12px;
+            color: white;
+        }
+        
+
+       
+
+.about{
+    position: fixed;
+    width: auto;
+    padding-top: 70px;
+    left: 0;
+color: white;
+}
+        .choose-car{
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            overflow: scroll;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+        }
+
+.car-image{
+    width: 80px;
+    padding: 2px;
+    height: 60px;
+    transform: skew(-10deg,0deg);
+}
+    </style>
+
+</head>
+<body onload="Racing()">
+    <div id="race">
+     <center>
+        <h1 class="race-title"><span style="color: orange;font-size: 50px; font-weight:bolder;font-family: cursive;">MEC</span>athon</h1>
+    </center>
+    </div>
+
+    <div id="gamemenu" class="gamemenu none">
+
+<div class="about">
+    <div style="background: rgba(0, 128, 128, 0.5);color: white;padding: 10px 30px;">
+        <input type="text" id="chosen-car" style="padding:10px 12px;border: none;background: transparent;color:white;" placeholder="Choose a car" readonly>
+
+    </div>
+<div id="info">
+
+</div>
+    <br/>
+
+</div>
+
+<center>
+
+</center>
+<div style="position: absolute;
+            bottom: 60px;right: 0;">
+    <div class="choose-car">
+        <img class="car-image" onclick="Jeep()" src="./img/jeep_bg.jpeg" />
+        <img class="car-image" onclick="Mercedes()" src="./img/mercedes_bg.jpg"/>
+        <img class="car-image" onclick="Lambo()" src="./img/lamborghini_bg.jpg"/>
+        <img class="car-image" onclick="Bugatti()" src="./img/bugatti_bg.png"/>
+<img class="car-image" onclick="Formlar()" src="./img/f1_bg.jpg"/>
+        
+        
+    </div>
+
+</div>
+
+
+        <div class="menu">
+           <a style="font-weight: 400;"><<</a>&emsp;
+           <a><i class="fa fa-home"></i>  </a>&emsp;
+           <a><i class="fa fa-medal"></i></a>
+        </div>
+            
+              
+<button onclick="CheckStart()" style="padding:10px 50px;right: 10px;background: gold;color: white;border: none;position: fixed;bottom: 10px;">Start</button>
+        </div>
+
+    </div>
+
+    <div class="CarGame none" id="gamemode">
+        <div class="Score"></div>
+        <center>
+       <div class="StartScreen">
+            <p>Start Game by clicking Here<br><br>Arrow Keys or Touch to move<br><br>If you hit another car you will lose</p>
+           <button onclick="Reset()">Reset Highest Score</button>
+        </div>
+    </center>
+        <div class="GameArea"></div>
+        <div class="controls">
+            <div class="control-btn" data-direction="left">←</div>
+            <div class="control-btn" data-direction="up">↑</div>
+            <div class="control-btn" data-direction="down">↓</div>
+            <div class="control-btn" data-direction="right">→</div>
+        </div>
+    </div>
+<script>
+    function Jeep(){
+        document.getElementById('chosen-car').value='Jeep';
+        document.getElementById('gamemenu').style.backgroundImage="url('./img/jeep_bg.jpeg')"
+
+        document.getElementById("info").innerHTML = `
+
+    <a>Top speed ==== 240 KM/H</a>
+    <br/>
+    <a>Acceleration ==== 4.7 Sec</a>
+    <br/>
+    <a>Handling ==== 8 M</a>`
+    }
+     function Mercedes(){
+        document.getElementById('chosen-car').value='Mercedes Benz';
+        document.getElementById('gamemenu').style.backgroundImage="url('./img/mercedes_bg.jpg')"
+
+        document.getElementById("info").innerHTML = `
+
+    <a>Top speed ==== 150 KM/H</a>
+    <br/>
+    <a>Acceleration ==== 2.7 Sec</a>
+    <br/>
+    <a>Handling ==== 4 M</a>`
+    }
+     function Lambo(){
+        document.getElementById('chosen-car').value='Lamborghini';
+        document.getElementById('gamemenu').style.backgroundImage="url('./img/lamborghini_bg.jpg')"
+
+        document.getElementById("info").innerHTML = `
+
+    <a>Top speed ==== 340 KM/H</a>
+    <br/>
+    <a>Acceleration ==== 5.7 Sec</a>
+    <br/>
+    <a>Handling ==== 9 M</a>`
+    }
+
+     function Bugatti(){
+        document.getElementById('chosen-car').value='Bugatti';
+        document.getElementById('gamemenu').style.backgroundImage="url('./img/bugatti_bg.png')"
+
+        document.getElementById("info").innerHTML = `
+
+    <a>Top speed ==== 440 KM/H</a>
+    <br/>
+    <a>Acceleration ==== 6.7 Sec</a>
+    <br/>
+    <a>Handling ==== 9 M</a>`
+    }
+
+     function Formlar(){
+        document.getElementById('chosen-car').value='F1';
+        document.getElementById('gamemenu').style.backgroundImage="url('./img/f1_bg.jpg')"
+
+        document.getElementById("info").innerHTML = `
+
+    <a>Top speed ==== 550 KM/H</a>
+    <br/>
+    <a>Acceleration ==== 10.7 Sec</a>
+    <br/>
+    <a>Handling ==== 11 M</a>`
+    }
+
+
+document.addEventListener("keyup", (e)=>{
+if(e.ctrlKey){
+    start();
+}
+})
+    function Racing() {
+        setTimeout(() => {
+            document.getElementById("race").style.display = "none";
+            document.getElementById("gamemenu").style.display = "block";
+        }, 3000);
+    }
+
+    const score = document.querySelector('.Score');
+    // var carspeed = document.getElementById("speed-car").value;
+    var chosen = document.getElementById('chosen-car');
+
+    function CheckStart() {
+        if (document.getElementById('chosen-car').value == "") {
+            alert("Please choose a car");
+        } else {
+            document.getElementById('gamemode').style.display = "block";
+            document.getElementById('gamemenu').style.display = "none";
+        }
+    }
+
+    const startscreen = document.querySelector('.StartScreen');
+    const gamearea = document.querySelector('.GameArea');
+    var player = { speed: 5, score: 0 };
+    let highest = 0;
+    let level = 1;
+
+    startscreen.addEventListener('click', start);
+
+
+    let keys = { ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false };
+
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('keyup', keyUp);
+
+    document.querySelectorAll('.control-btn').forEach(btn => {
+        btn.addEventListener('touchstart', touchStart);
+        btn.addEventListener('touchend', touchEnd);
+    });
+
+    function touchStart(e) {
+        const direction = e.target.dataset.direction;
+        keys[`Arrow${capitalize(direction)}`] = true;
+    }
+
+    function touchEnd(e) {
+        const direction = e.target.dataset.direction;
+        keys[`Arrow${capitalize(direction)}`] = false;
+    }
+
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function keyDown(ev) {
+        ev.preventDefault();
+        keys[ev.key] = true;
+    }
+
+    function keyUp(ev) {
+        ev.preventDefault();
+        keys[ev.key] = false;
+    }
+
+    function isCollide(a, b) {
+        aRect = a.getBoundingClientRect();
+        bRect = b.getBoundingClientRect();
+
+        return !((aRect.bottom < bRect.top) || (aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right));
+    }
+
+    function moveLines() {
+        let lines = document.querySelectorAll('.lines');
+        lines.forEach(function(item) {
+            if (item.y >= 700) {
+                item.y -= 750;
+            }
+            item.y += player.speed;
+            item.style.top = item.y + 'px';
+        });
+    }
+
+    function endGame() {
+        player.start = false;
+        startscreen.classList.remove('hide');
+    }
+
+    function moveCar(car) {
+        let other = document.querySelectorAll('.other');
+        other.forEach(function(item) {
+            if (isCollide(car, item)) {
+                console.log('HIT');
+                var crush= new Audio();
+                crush.src='./img/Crush.mp3';
+                crush.play();
+                moving.pause();
+                endGame();
+            }
+            if (item.y >= 750) {
+                item.y = -300;
+                item.style.left = Math.floor(Math.random() * 350) + 'px';
+            }
+            item.y += player.speed;
+            item.style.top = item.y + 'px';
+        });
+    }
+
+    function gamePlay() {
+        let car = document.querySelector('.car');
+        let road = gamearea.getBoundingClientRect();
+
+        if (player.start) {
+            moveLines();
+            moveCar(car);
+            if (keys.ArrowUp && player.y > (road.top + 70)) {
+                player.y -= player.speed;
+            }
+            if (keys.ArrowDown && player.y < (road.bottom - 70)) {
+                player.y += player.speed;
+            }
+            if (keys.ArrowLeft && player.x > 0) {
+                player.x -= player.speed;
+            }
+            if (keys.ArrowRight && player.x < (road.width - 50)) {
+                player.x += player.speed;
+            }
+
+            car.style.top = player.y + 'px';
+            car.style.left = player.x + 'px';
+
+            window.requestAnimationFrame(gamePlay);
+
+            player.score++;
+            if (player.score >= highest) {
+                highest = player.score;
+            }
+
+            score.innerHTML = "Your Score: " + player.score + "<br><br>" + "Highest Score: " + highest;
+
+            if (player.score % 3000 === 0) {
+                player.speed++;
+                level++;
+            }
+            if (player.score == 3000) {
+                alert("Wow, we are impressed. Get 4000 for your prize.")
+            }
+            if (player.score == 4000) {
+                alert("Youve obtained the Silver medal! Get the gold medal")
+            }
+        }
+    }
+
+    function Reset() {
+        highest = 0;
+    }
+
+var moving= new Audio();
+    function start() {
+    const car = document.createElement('div');
+    car.setAttribute('class', 'car');
+
+    if (chosen.value == "Jeep") {
+        player.speed = 10;
+        car.style.backgroundImage = "url('./img/jeepp.jpg')";
+    }
+    if (chosen.value == "Bugatti") {
+        player.speed = 13;
+        car.style.backgroundImage = "url('./img/bugg.jpg')";
+    }
+    if (chosen.value == "Mercedes Benz") {
+        player.speed = 8;
+        car.style.backgroundImage = "url('./img/Mercedes.jpg')";
+    }
+    if (chosen.value == "Lamborghini") {
+        player.speed = 16;
+        car.style.backgroundImage = "url('./img/lambos.jpg')";
+    }
+    if (chosen.value == "F1") {
+        player.speed = 18;
+        car.style.backgroundImage = "url('./img/f1.jpg')";
+    }
+        moving.src="./img/Move.mp3";
+        moving.loop=true;
+        moving.play();
+moving.id="movingaud";
+
+        
+    startscreen.classList.add('hide');
+    gamearea.innerHTML = "";
+
+    player.start = true;
+    player.score = 0;
+
+    // Add road lines
+    for (let x = 0; x < 5; x++) {
+        let roadline = document.createElement('div');
+        roadline.setAttribute('class', 'lines');
+        roadline.y = (x * 150);
+        roadline.style.top = roadline.y + 'px';
+        gamearea.appendChild(roadline);
+    }
+
+    // Append the car to the game area
+    gamearea.appendChild(car);
+
+    player.x = car.offsetLeft;
+    player.y = car.offsetTop;
+
+    // Add other cars
+    for (let x = 0; x < 3; x++) {
+        let othercar = document.createElement('div');
+        othercar.setAttribute('class', 'other');
+        var cars=["./img/f1.jpg","./img/Mercedes.jpg","./img/jeepp.jpg","./img/f1.jpg"];
+        var random=Math.floor(Math.random()* cars.length);
+        if(othercar){
+        othercar.style.backgroundImage=`url(${cars[random]})`;
+                              }
+        othercar.y = ((x + 1) * 350) * -1;
+        othercar.style.top = othercar.y + 'px';
+        othercar.style.left = Math.floor(Math.random() * 350) + 'px';
+        gamearea.appendChild(othercar);
+    }
+
+    window.requestAnimationFrame(gamePlay);
+}           
+</script>
+    
+</body>
+</html>
+
